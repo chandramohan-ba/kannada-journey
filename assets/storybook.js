@@ -39,7 +39,6 @@ var IMAGES = {
   /* ---- Home (index.html) ---- */
   home1:    "",   // Rahul arrives in the village, Anand greets him
   home2:    "",   // three stepping stones: Practical, Step by step, Connection
-  home2b:   "",   // three stepping stones: problem, why, solution
   home3:    "",   // signpost with seven arrows (the seven steps)
 
   /* ---- Who It's For (who-its-for.html) ---- */
@@ -62,24 +61,34 @@ var IMAGES = {
 
   /* ---- About (about.html) ---- */
   about0:   "",
-  about1:   "",
 
   /* ---- Contact (contact.html) ---- */
   contact0: ""
 };
 
 /* ---------------------------------------------------------------------
-   ENQUIRY FORM (contact.html)
-   Until you decide where enquiries should go, leave endpoint empty:
-   the form then shows a polite "not collecting enquiries yet" message
-   and sends nothing anywhere.
-   When you are ready, paste the web address of your form service here,
-   for example a Formspree or Google Apps Script URL:
-       endpoint: "https://formspree.io/f/your-code",
-   The form will then send all its fields to that address.
+   ENQUIRY FORM (contact.html): saves each enquiry as a row in Supabase
+   ---------------------------------------------------------------------
+   Form field                        ->  Supabase column
+   Full name                         ->  name
+   Email address                     ->  email
+   Phone (optional)                  ->  phone
+   I am a                            ->  category
+   Current Kannada level             ->  level
+   What would you like to achieve?   ->  goal
+   Additional message                ->  details
+
+   table : the name of YOUR Supabase table. Change it here if it is not
+           "enquiries".
+   The publishable key is designed to sit in a web page. It is safe only
+   because the table is protected with Row Level Security that allows
+   INSERT (adding rows) but not reading. See supabase-setup.sql.
    --------------------------------------------------------------------- */
 var ENQUIRY = {
-  endpoint: ""
+  supabaseUrl: "https://ghkakclkobpnwbeafmbu.supabase.co",
+  supabaseKey: "sb_publishable_rZqDhPziVRuvytucY0rv4Q_UNL-JhDZ",
+  table: "enquiries",
+  successMessage: ""      /* optional: leave empty to use the standard thank-you */
 };
 
 /* ---------------------------------------------------------------------
@@ -1145,29 +1154,51 @@ SCENES.prog9 = function () { return SCENES.program6(); };
       box.textContent = text;
       box.className = "sb-status sb-status--" + kind;
     }
+    /* read a field by its name (form.name would give the form's own name, so use elements) */
+    function val(name) {
+      var f = form.elements[name];
+      return f && f.value ? String(f.value).replace(/^\s+|\s+$/g, "") : "";
+    }
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-      if (form.website && form.website.value) return;           /* spam trap: real people leave it empty */
+      if (val("website")) return;                                 /* spam trap: real people leave it empty */
       if (form.reportValidity && !form.reportValidity()) return;
 
-      if (!ENQUIRY.endpoint) {
+      if (!ENQUIRY.supabaseUrl || !ENQUIRY.supabaseKey || !ENQUIRY.table) {
         say("Thank you for your interest! We are not collecting enquiries just yet. Please visit again soon.", "info");
         return;
       }
 
+      var row = {
+        name:     val("name"),
+        email:    val("email"),
+        phone:    val("phone") || null,
+        category: val("role"),
+        level:    val("level"),
+        goal:     val("goal"),
+        details:  val("message") || null
+      };
+
       btn.disabled = true;
       say("Sending…", "info");
-      fetch(ENQUIRY.endpoint, {
+      fetch(ENQUIRY.supabaseUrl.replace(/\/+$/, "") + "/rest/v1/" + encodeURIComponent(ENQUIRY.table), {
         method: "POST",
-        body: new FormData(form),
-        headers: { "Accept": "application/json" }
+        headers: {
+          "apikey": ENQUIRY.supabaseKey,
+          "Content-Type": "application/json",
+          "Prefer": "return=minimal"
+        },
+        body: JSON.stringify(row)
       }).then(function (res) {
-        if (!res.ok) throw new Error("bad response");
+        if (!res.ok) {
+          return res.text().then(function (t) { throw new Error("Supabase answered " + res.status + ": " + t); });
+        }
         form.reset();
-        say("Thank you! Your enquiry has been sent. We will be in touch.", "ok");
-      }).catch(function () {
-        say("Sorry, something went wrong. Please try again in a little while.", "error");
+        say(ENQUIRY.successMessage || "Thank you! Your enquiry has been received. We will be in touch.", "ok");
+      }).catch(function (err) {
+        if (window.console) console.error("Enquiry could not be saved:", err);
+        say("Sorry, we could not send your enquiry just now. Please try again in a little while.", "error");
       }).then(function () { btn.disabled = false; });
     });
   }

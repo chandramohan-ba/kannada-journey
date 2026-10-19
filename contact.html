@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Contact | Kannada Journey</title>
   <meta name="description" content="Enquire about joining Kannada Journey.">
+  <link rel="icon" type="image/jpeg" href="assets/logo.jpeg">
 
   <!-- Fonts for the storybook look (Kannada + vintage display). Remove if your styles.css already loads fonts. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +19,7 @@
 
   <!-- Top bar. If you prefer your existing site header, replace this block with it. -->
   <header class="sb-topbar">
-    <a class="sb-brand" href="index.html">Kannada Journey</a>
+    <a class="sb-brand" href="index.html"><img class="sb-logo" src="assets/logo.jpeg" alt="" width="44" height="52"><span>Kannada Journey</span></a>
     <nav class="sb-topnav" aria-label="Main">
       <a href="index.html">Home</a>
 	  <span class="nav-disabled" aria-disabled="true">
@@ -84,11 +85,11 @@
 <p class="sb-lead">First-batch details will be shared with those who sign the Guest Book.</p>
 
           <form class="sb-form" id="sbEnquiry" action="#" method="post" novalidate>
-            <div class="sb-form__row"><div class="sb-field"><label for="sb-name">Full name</label><input id="sb-name" name="name" type="text" required autocomplete="name"></div><div class="sb-field"><label for="sb-email">Email address</label><input id="sb-email" name="email" type="email" required autocomplete="email"></div></div>
-            <div class="sb-form__row"><div class="sb-field"><label for="sb-phone">Phone (optional)</label><input id="sb-phone" name="phone" type="tel" autocomplete="tel"></div><div class="sb-field"><label for="sb-role">I am a</label><select id="sb-role" name="role" required><option value="" disabled selected>Select one</option><option>Medical/Nursing student</option><option>Yoga practitioner</option><option>IT professional</option><option>New learner</option><option>Other</option></select></div></div>
+            <div class="sb-form__row"><div class="sb-field"><label for="sb-name">Full name</label><input id="sb-name" name="name" type="text" required maxlength="100" autocomplete="name"></div><div class="sb-field"><label for="sb-email">Email address</label><input id="sb-email" name="email" type="email" required maxlength="150" autocomplete="email"></div></div>
+            <div class="sb-form__row"><div class="sb-field"><label for="sb-phone">Phone (optional)</label><input id="sb-phone" name="phone" type="tel" maxlength="30" autocomplete="tel"></div><div class="sb-field"><label for="sb-role">I am a</label><select id="sb-role" name="role" required><option value="" disabled selected>Select one</option><option>Medical/Nursing student</option><option>Yoga practitioner</option><option>IT professional</option><option>New learner</option><option>Other</option></select></div></div>
             <div class="sb-form__row"><div class="sb-field"><label for="sb-level">Current Kannada level</label><select id="sb-level" name="level" required><option value="" disabled selected>Select one</option><option>Complete beginner</option><option>Some knowledge</option><option>Understand but cannot speak</option><option>Other</option></select></div></div>
-            <div class="sb-field"><label for="sb-goal">What would you like to achieve?</label><textarea id="sb-goal" name="goal" rows="3" required></textarea></div>
-            <div class="sb-field"><label for="sb-message">Additional message</label><textarea id="sb-message" name="message" rows="3"></textarea></div>
+            <div class="sb-field"><label for="sb-goal">What would you like to achieve?</label><textarea id="sb-goal" name="goal" rows="3" required maxlength="1000"></textarea></div>
+            <div class="sb-field"><label for="sb-message">Additional message</label><textarea id="sb-message" name="message" rows="3" maxlength="2000"></textarea></div>
             <div class="sb-hp" aria-hidden="true"><label for="sb-website">Website</label><input id="sb-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
             <p class="sb-consent">By submitting, you agree to be contacted about your enquiry. Do not send sensitive medical or personal information.</p>
             <button class="sb-btn" type="submit">Send enquiry</button>
