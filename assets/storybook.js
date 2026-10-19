@@ -87,7 +87,7 @@ var IMAGES = {
 var ENQUIRY = {
   supabaseUrl: "https://ghkakclkobpnwbeafmbu.supabase.co",
   supabaseKey: "sb_publishable_rZqDhPziVRuvytucY0rv4Q_UNL-JhDZ",
-  table: "enquiries",
+  table: "launch_list",
   successMessage: ""      /* optional: leave empty to use the standard thank-you */
 };
 
