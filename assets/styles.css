@@ -29,9 +29,9 @@
 }
 
 .nav-disabled {
-  color: #9aa5a1;
+  color: #b8c0bd;
   cursor: not-allowed;
-  opacity: 0.6;
+  text-decoration: none;
   pointer-events: none;
   user-select: none;
 }
