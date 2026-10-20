@@ -63,7 +63,28 @@ var IMAGES = {
   about0:   "",
 
   /* ---- Contact (contact.html) ---- */
-  contact0: ""
+  contact0: "",
+  contact1: ""    // Contact page, 2nd page (the enquiry form)
+};
+
+/* ---------------------------------------------------------------------
+   ILLUSTRATIONS (pictures with text laid over them)
+   For these pictures the page shows YOUR painted illustration, and writes
+   the speech bubbles and signs on top of it, so the words stay editable.
+   If a picture file is missing, the built-in drawing is shown instead.
+
+   Put the picture files in the folder assets/images/ :
+     home1    assets/images/home-welcome.jpg    Home: teacher welcomes student
+     contact0 assets/images/contact-invite.jpg  Contact page 1: teacher invites
+                                                the student to fill the form
+     contact1 assets/images/contact-form.jpg    Contact page 2: student fills
+                                                the enquiry form
+   Use landscape pictures, 3:2 (for example 1536 x 1024), saved as JPG.
+   --------------------------------------------------------------------- */
+var PHOTOS = {
+  home1:    { src: "assets/images/home-welcome.jpg" },
+  contact0: { src: "assets/images/contact-invite.jpg" },
+  contact1: { src: "assets/images/contact-form.jpg" }
 };
 
 /* ---------------------------------------------------------------------
@@ -87,7 +108,7 @@ var IMAGES = {
 var ENQUIRY = {
   supabaseUrl: "https://ghkakclkobpnwbeafmbu.supabase.co",
   supabaseKey: "sb_publishable_rZqDhPziVRuvytucY0rv4Q_UNL-JhDZ",
-  table: "launch_list",
+  table: "enquiries",
   successMessage: ""      /* optional: leave empty to use the standard thank-you */
 };
 
@@ -988,6 +1009,48 @@ SCENES.prog7 = function () { return SCENES.writing(); };
 SCENES.prog8 = function () { return SCENES.program5(); };
 SCENES.prog9 = function () { return SCENES.program6(); };
 
+
+/* =====================================================================
+   TEXT LAID OVER THE ILLUSTRATIONS
+   Coordinates are in a 480 x 320 space (the picture is 3.2 times bigger).
+   Change the words here and they change on the picture.
+   ===================================================================== */
+function ribbon(cx, y, w, h, text, size) {
+  var x = cx - w / 2;
+  return '<path d="M' + (x - 10) + ' ' + y + ' H' + (x + w + 10) + ' L' + (x + w) + ' ' + (y + h / 2) + ' L' + (x + w + 10) + ' ' + (y + h) + ' H' + (x - 10) + ' L' + x + ' ' + (y + h / 2) + ' Z" fill="#b5301d" stroke="' + INK + '" stroke-width="2.4" stroke-linejoin="round"/>' +
+    '<text class="sb-svg-text" x="' + cx + '" y="' + (y + h / 2 + size / 3) + '" font-size="' + size + '" text-anchor="middle" fill="#fff7e2" font-weight="800">' + text + '</text>';
+}
+function hangingSign(x, y, w, h, text, size) {
+  return '<path d="M' + (x + 10) + ' ' + (y - 8) + ' V' + y + ' M' + (x + w - 10) + ' ' + (y - 8) + ' V' + y + '" stroke="' + INK + '" stroke-width="2" fill="none"/>' +
+    '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="3" fill="#f2dfb3" stroke="#7a4a22" stroke-width="2.6"/>' +
+    '<text class="sb-svg-text" x="' + (x + w / 2) + '" y="' + (y + h / 2 + size / 3) + '" font-size="' + size + '" text-anchor="middle" fill="#b5301d" font-weight="800">' + text + '</text>';
+}
+var OVERLAYS = {
+  /* Home: both say Namaskara, and a Welcome sign hangs on the door */
+  home1: function () {
+    return bubble(26, 4, 130, 32, "Namaskara!", 17, "r") +
+      bubble(228, 6, 122, 32, "Namaskara!", 17, "r") +
+      hangingSign(379, 94, 66, 22, "Welcome", 12);
+  },
+  /* Contact page 1: the teacher asks the name, the student answers */
+  contact0: function () {
+    return bubble(190, 4, 170, 34, "What is your name?", 14, "r") +
+      bubble(40, 6, 120, 32, "Rahul", 20, "r");
+  },
+  /* Contact page 2: a Welcome ribbon along the top */
+  contact1: function () {
+    return ribbon(240, 8, 130, 26, "Welcome", 19);
+  }
+};
+function photoScene(p, slot) {
+  var ov = OVERLAYS[slot] ? OVERLAYS[slot]() : "";
+  return '<svg class="sb-svg-photo" style="aspect-ratio:3 / 2" viewBox="0 0 1536 1024" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" role="img">' +
+    '<image href="' + p.src + '" xlink:href="' + p.src + '" x="0" y="0" width="1536" height="1024" preserveAspectRatio="xMidYMid slice"/>' +
+    '<g transform="scale(3.2)">' + ov + '</g></svg>';
+}
+/* the 2nd Contact page uses the gate drawing until its illustration exists */
+SCENES.contact1 = function () { return SCENES.finale(); };
+
 /* ---------------------------------------------------------------------
    Fills each picture slot: your image if set, otherwise the drawing.
    --------------------------------------------------------------------- */
@@ -1002,10 +1065,13 @@ SCENES.prog9 = function () { return SCENES.program6(); };
     var slot = el.getAttribute("data-slot");
     var alt = el.getAttribute("data-alt") || "";
     var src = IMAGES[slot];
-    function useDrawing() {
-      el.innerHTML = drawing(slot);
+    function mark() {
       el.setAttribute("role", "img");
       el.setAttribute("aria-label", alt);
+    }
+    function useDrawing() {
+      el.innerHTML = drawing(slot);
+      mark();
     }
     if (src) {
       var img = new Image();
@@ -1014,6 +1080,13 @@ SCENES.prog9 = function () { return SCENES.program6(); };
       img.src = src;
       el.innerHTML = "";
       el.appendChild(img);
+    } else if (PHOTOS[slot]) {
+      /* your illustration, with the words laid over it; the drawing if the file is missing */
+      var probe = new Image();
+      probe.onload = function () { el.innerHTML = photoScene(PHOTOS[slot], slot); mark(); };
+      probe.onerror = useDrawing;
+      el.innerHTML = "";
+      probe.src = PHOTOS[slot].src;
     } else {
       useDrawing();
     }
