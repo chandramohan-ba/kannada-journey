@@ -37,7 +37,7 @@ var IMAGES = {
   stageBelong: "",   // Stage 3: alumni courtyard
 
   /* ---- Home (index.html) ---- */
-  home1:    "",   // Rahul arrives in the village, Anand greets him
+  home1:    "",   // Home: set up under PHOTOS below (picture with words on it)
   home2:    "",   // three stepping stones: Practical, Step by step, Connection
   home3:    "",   // signpost with seven arrows (the seven steps)
 
@@ -63,7 +63,23 @@ var IMAGES = {
   about0:   "",
 
   /* ---- Contact (contact.html) ---- */
-  contact0: ""
+  contact0: "",
+  contact1: ""    // Contact page, 2nd page (the enquiry form)
+};
+
+/* ---------------------------------------------------------------------
+   ILLUSTRATIONS (your painted pictures, with words written over them)
+   The page shows your picture and writes the speech bubbles and signs on
+   top of it. If a picture file is missing, the built-in drawing is shown.
+   Files go in the folder assets/images/ :
+     home1     Home page
+     contact0  Contact page, page 1 (teacher invites the student to fill the form)
+     contact1  Contact page, page 2 (student fills the form)
+   --------------------------------------------------------------------- */
+var PHOTOS = {
+  home1:    { src: "assets/images/home-welcome.jpg" },
+  contact0: { src: "assets/images/contact-teachersuggestingformfilling.jpg" },
+  contact1: { src: "assets/images/contact-studentfillingform.jpg" }
 };
 
 /* ---------------------------------------------------------------------
@@ -988,6 +1004,43 @@ SCENES.prog7 = function () { return SCENES.writing(); };
 SCENES.prog8 = function () { return SCENES.program5(); };
 SCENES.prog9 = function () { return SCENES.program6(); };
 
+
+/* =====================================================================
+   WORDS WRITTEN OVER THE PICTURES
+   Change the words here and they change on the picture.
+   Positions use a space of 480 across and 320 down.
+   ===================================================================== */
+function ribbon(cx, y, w, h, text, size) {
+  var x = cx - w / 2;
+  return '<path d="M' + (x - 10) + ' ' + y + ' H' + (x + w + 10) + ' L' + (x + w) + ' ' + (y + h / 2) + ' L' + (x + w + 10) + ' ' + (y + h) + ' H' + (x - 10) + ' L' + x + ' ' + (y + h / 2) + ' Z" fill="#b5301d" stroke="' + INK + '" stroke-width="2.4" stroke-linejoin="round"/>' +
+    '<text class="sb-svg-text" x="' + cx + '" y="' + (y + h / 2 + size / 3) + '" font-size="' + size + '" text-anchor="middle" fill="#fff7e2" font-weight="800">' + text + '</text>';
+}
+var OVERLAYS = {
+  /* Home: both say Namaskara, and a Welcome ribbon lies on the path */
+  home1: function () {
+    return bubble(26, 4, 130, 32, "Namaskara!", 17, "r") +
+      bubble(228, 6, 122, 32, "Namaskara!", 17, "r") +
+      ribbon(218, 282, 80, 22, "Welcome", 15);
+  },
+  /* Contact page 1: the student gives his name, the teacher asks it */
+  contact0: function () {
+    return bubble(95, 2, 110, 30, "Rahul", 20, "r") +
+      bubble(340, 6, 136, 32, "What is your name?", 12, "l");
+  },
+  /* Contact page 2: a Welcome ribbon across the top */
+  contact1: function () {
+    return ribbon(197, 8, 130, 26, "Welcome", 19);
+  }
+};
+function photoScene(p, slot) {
+  var ov = OVERLAYS[slot] ? OVERLAYS[slot]() : "";
+  return '<svg class="sb-svg-photo" style="aspect-ratio:3 / 2" viewBox="0 0 1536 1024" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" role="img">' +
+    '<image href="' + p.src + '" xlink:href="' + p.src + '" x="0" y="0" width="1536" height="1024" preserveAspectRatio="xMidYMid slice"/>' +
+    '<g transform="scale(3.2)">' + ov + '</g></svg>';
+}
+/* if the Contact page 2 picture file is missing, the gate drawing is shown */
+SCENES.contact1 = function () { return SCENES.finale(); };
+
 /* ---------------------------------------------------------------------
    Fills each picture slot: your image if set, otherwise the drawing.
    --------------------------------------------------------------------- */
@@ -1002,10 +1055,13 @@ SCENES.prog9 = function () { return SCENES.program6(); };
     var slot = el.getAttribute("data-slot");
     var alt = el.getAttribute("data-alt") || "";
     var src = IMAGES[slot];
-    function useDrawing() {
-      el.innerHTML = drawing(slot);
+    function mark() {
       el.setAttribute("role", "img");
       el.setAttribute("aria-label", alt);
+    }
+    function useDrawing() {
+      el.innerHTML = drawing(slot);
+      mark();
     }
     if (src) {
       var img = new Image();
@@ -1014,6 +1070,13 @@ SCENES.prog9 = function () { return SCENES.program6(); };
       img.src = src;
       el.innerHTML = "";
       el.appendChild(img);
+    } else if (PHOTOS[slot]) {
+      /* your painted picture with the words on it; the drawing if the file is missing */
+      var probe = new Image();
+      probe.onload = function () { el.innerHTML = photoScene(PHOTOS[slot], slot); mark(); };
+      probe.onerror = useDrawing;
+      el.innerHTML = "";
+      probe.src = PHOTOS[slot].src;
     } else {
       useDrawing();
     }
