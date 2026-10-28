@@ -72,14 +72,56 @@ var IMAGES = {
    The page shows your picture and writes the speech bubbles and signs on
    top of it. If a picture file is missing, the built-in drawing is shown.
    Files go in the folder assets/images/ :
-     home1     Home page
+     home1     Home page, page 1 (the welcome)
+     home2     Home page, page 2 (three key differentiators)
+     home3     Home page, page 3 (your journey in seven steps)
      contact0  Contact page, page 1 (teacher invites the student to fill the form)
      contact1  Contact page, page 2 (student fills the form)
    --------------------------------------------------------------------- */
 var PHOTOS = {
   home1:    { src: "assets/images/home-welcome.jpg" },
+  home2:    { src: "assets/images/home-usp-threekeydifferentiators.jpg" },
+  home3:    { src: "assets/images/home-sevenstepjourney.jpg" },
   contact0: { src: "assets/images/contact-teachersuggestingformfilling.jpg" },
-  contact1: { src: "assets/images/contact-studentfillingform.jpg" }
+  contact1: { src: "assets/images/contact-studentfillingform.jpg" },
+  about0:    { src: "assets/images/about-main.jpg" },
+  aboutMeasure:    { src: "assets/images/about-measure.jpg" },
+  aboutWelcome:    { src: "assets/images/about-welcome.jpg" },
+  who0:    { src: "assets/images/whoitsfor-main.jpg" },
+  whoHealth:    { src: "assets/images/whoitsfor-health.jpg" },
+  whoIT:    { src: "assets/images/whoitsfor-it.jpg" },
+  whoYoga:    { src: "assets/images/whoitsfor-yoga.jpg" },
+  whoFamily:    { src: "assets/images/whoitsfor-family.jpg" },
+  finale:    { src: "assets/images/whoitsfor-welcome.jpg" },
+  howMain:    { src: "assets/images/howitworks-main.jpg" },
+  howStage1:    { src: "assets/images/howitworks-stage1.jpg" },
+  howStage2:    { src: "assets/images/howitworks-stage2.jpg" },
+  howStage3:    { src: "assets/images/howitworks-stage3.jpg" },
+  howWelcome:    { src: "assets/images/howitworks-welcome.jpg" },
+  programsMain:    { src: "assets/images/programs-main.jpg" },
+  programsOverview:    { src: "assets/images/programs-overview.jpg" },
+  programsStage1:    { src: "assets/images/programs-stage1.jpg" },
+  programsProgram1:    { src: "assets/images/programs-program1.jpg" },
+  programsProgram1Detail:    { src: "assets/images/programs-program1-detail.jpg" },  
+  programsProgram2:    { src: "assets/images/programs-program2.jpg" },
+  programsProgram2Detail:    { src: "assets/images/programs-program2-detail.jpg" },  
+  programsProgram3:    { src: "assets/images/programs-program3.jpg" },
+  programsProgram3Detail:    { src: "assets/images/programs-program3-detail.jpg" },  
+  programsProgram4:    { src: "assets/images/programs-program4.jpg" },
+  programsProgram4Detail:    { src: "assets/images/programs-program4-detail.jpg" },
+  programsStage2:    { src: "assets/images/programs-stage2.jpg" },
+  programsProgram5:    { src: "assets/images/programs-program5.jpg" },
+  programsProgram5Detail:    { src: "assets/images/programs-program5-detail.jpg" },  
+  programsProgram6:    { src: "assets/images/programs-program6.jpg" },
+  programsProgram6Detail:    { src: "assets/images/programs-program6-detail.jpg" },  
+  programsProgram7:    { src: "assets/images/programs-program7.jpg" },
+  programsProgram7Detail:    { src: "assets/images/programs-program7-detail.jpg" },  
+  programsProgram8:    { src: "assets/images/programs-program8.jpg" },
+  programsProgram8Detail:    { src: "assets/images/programs-program8-detail.jpg" },
+  /* programsStage3:    { src: "assets/images/programs-stage3.jpg" } */
+  
+  programsProgram9:    { src: "assets/images/programs-program9.jpg" },
+  programsProgram9Detail:    { src: "assets/images/programs-program9-detail.jpg" }
 };
 
 /* ---------------------------------------------------------------------
@@ -845,7 +887,7 @@ SCENES.evHealth = function () {
 };
 
 /* ---------------- ABOUT ---------------- */
-SCENES.about0 = function () {
+ SCENES.about0 = function () {
   return wrap(
     skyBg("sbAb0", "#f6c98a", "#fbe9b8") +
     '<rect x="40" y="130" width="400" height="220" fill="#f0d9a8" stroke="' + INK + '" stroke-width="4"/>' +
@@ -886,28 +928,28 @@ SCENES.about1 = function () {
 
 
 /* ---------------- CONTACT ---------------- */
-SCENES.contact0 = function () {
-  return wrap(
-    skyBg("sbCt0", "#f6c98a", "#fbe9b8") +
-    '<rect x="30" y="120" width="420" height="232" fill="#f0d9a8" stroke="' + INK + '" stroke-width="4"/>' +
-    '<path d="M12 120 L240 40 L468 120 Z" fill="#b5301d" stroke="' + INK + '" stroke-width="4" stroke-linejoin="round"/>' +
-    '<rect x="186" y="150" width="108" height="202" rx="4" fill="#6b4423" stroke="' + INK + '" stroke-width="4"/>' +
-    '<rect x="196" y="160" width="88" height="192" fill="#fde28a" opacity=".55"/>' +
-    '<circle cx="120" cy="206" r="28" fill="#f4b73c" opacity=".4"/><path d="M112 194 H128 L132 216 Q120 226 108 216 Z" fill="#fde28a" stroke="' + INK + '" stroke-width="2.4"/>' +
-    '<circle cx="360" cy="206" r="28" fill="#f4b73c" opacity=".4"/><path d="M352 194 H368 L372 216 Q360 226 348 216 Z" fill="#fde28a" stroke="' + INK + '" stroke-width="2.4"/>' +
-    '<rect x="0" y="352" width="480" height="88" fill="#8fb36f" stroke="' + INK + '" stroke-width="3"/>' +
-    /* table and open guest book */
-    '<rect x="168" y="334" width="144" height="12" rx="3" fill="#7a4a22" stroke="' + INK + '" stroke-width="2.6"/><rect x="178" y="346" width="9" height="40" fill="#7a4a22" stroke="' + INK + '" stroke-width="2"/><rect x="293" y="346" width="9" height="40" fill="#7a4a22" stroke="' + INK + '" stroke-width="2"/>' +
-    '<path d="M240 332 L196 322 L200 296 L240 306 Z" fill="#fff7e2" stroke="' + INK + '" stroke-width="2.6" stroke-linejoin="round"/>' +
-    '<path d="M240 332 L284 322 L280 296 L240 306 Z" fill="#fff0cc" stroke="' + INK + '" stroke-width="2.6" stroke-linejoin="round"/>' +
-    '<path d="M208 310 L232 316 M208 318 L232 324 M248 316 L272 310 M248 324 L272 318" stroke="#b5301d" stroke-width="2" stroke-linecap="round"/>' +
-    fig(110, 432, 1.0, { who: "rahul", l: [-30, -52], r: [58, -98] }) +
-    '<path d="M168 334 L178 326" stroke="' + INK + '" stroke-width="4" stroke-linecap="round"/>' +
-    fig(372, 432, 1.0, { who: "anand", l: [-62, -98], r: [30, -52] }) +
-    bubble(240, 176, 160, 40, "What is your name?", 14, "r") +
-    bubble(40, 196, 110, 40, "Rahul", 20, "r")
-  );
-};
+// SCENES.contact0 = function () {
+  // return wrap(
+    // skyBg("sbCt0", "#f6c98a", "#fbe9b8") +
+    // '<rect x="30" y="120" width="420" height="232" fill="#f0d9a8" stroke="' + INK + '" stroke-width="4"/>' +
+    // '<path d="M12 120 L240 40 L468 120 Z" fill="#b5301d" stroke="' + INK + '" stroke-width="4" stroke-linejoin="round"/>' +
+    // '<rect x="186" y="150" width="108" height="202" rx="4" fill="#6b4423" stroke="' + INK + '" stroke-width="4"/>' +
+    // '<rect x="196" y="160" width="88" height="192" fill="#fde28a" opacity=".55"/>' +
+    // '<circle cx="120" cy="206" r="28" fill="#f4b73c" opacity=".4"/><path d="M112 194 H128 L132 216 Q120 226 108 216 Z" fill="#fde28a" stroke="' + INK + '" stroke-width="2.4"/>' +
+    // '<circle cx="360" cy="206" r="28" fill="#f4b73c" opacity=".4"/><path d="M352 194 H368 L372 216 Q360 226 348 216 Z" fill="#fde28a" stroke="' + INK + '" stroke-width="2.4"/>' +
+    // '<rect x="0" y="352" width="480" height="88" fill="#8fb36f" stroke="' + INK + '" stroke-width="3"/>' +
+    // /* table and open guest book */
+    // '<rect x="168" y="334" width="144" height="12" rx="3" fill="#7a4a22" stroke="' + INK + '" stroke-width="2.6"/><rect x="178" y="346" width="9" height="40" fill="#7a4a22" stroke="' + INK + '" stroke-width="2"/><rect x="293" y="346" width="9" height="40" fill="#7a4a22" stroke="' + INK + '" stroke-width="2"/>' +
+    // '<path d="M240 332 L196 322 L200 296 L240 306 Z" fill="#fff7e2" stroke="' + INK + '" stroke-width="2.6" stroke-linejoin="round"/>' +
+    // '<path d="M240 332 L284 322 L280 296 L240 306 Z" fill="#fff0cc" stroke="' + INK + '" stroke-width="2.6" stroke-linejoin="round"/>' +
+    // '<path d="M208 310 L232 316 M208 318 L232 324 M248 316 L272 310 M248 324 L272 318" stroke="#b5301d" stroke-width="2" stroke-linecap="round"/>' +
+    // fig(110, 432, 1.0, { who: "rahul", l: [-30, -52], r: [58, -98] }) +
+    // '<path d="M168 334 L178 326" stroke="' + INK + '" stroke-width="4" stroke-linecap="round"/>' +
+    // fig(372, 432, 1.0, { who: "anand", l: [-62, -98], r: [30, -52] }) +
+    // bubble(240, 176, 160, 40, "What is your name?", 14, "r") +
+    // bubble(40, 196, 110, 40, "Rohan", 20, "r")
+  // );
+// };
 
 
 /* =====================================================================
@@ -1022,20 +1064,20 @@ var OVERLAYS = {
       bubble(228, 6, 122, 32, "Namaskara!", 17, "r") +
       ribbon(218, 282, 80, 22, "Welcome", 15);
   },
-  /* Contact page 1: the student gives his name, the teacher asks it */
-  contact0: function () {
-    return bubble(95, 2, 110, 30, "Rahul", 20, "r") +
-      bubble(340, 6, 136, 32, "What is your name?", 12, "l");
-  },
-  /* Contact page 2: a Welcome ribbon across the top */
-  contact1: function () {
-    return ribbon(197, 8, 130, 26, "Welcome", 19);
-  }
+  // /* Contact page 1: the student gives his name, the teacher asks it */
+  // contact0: function () {
+    // return bubble(95, 2, 110, 30, "Rohan", 20, "r") +
+      // bubble(340, 6, 136, 32, "What is your name?", 12, "l");
+  // },
+  // /* Contact page 2: a Welcome ribbon across the top */
+  // contact1: function () {
+    // return ribbon(197, 8, 130, 26, "Welcome", 19);
+  // }
 };
 function photoScene(p, slot) {
   var ov = OVERLAYS[slot] ? OVERLAYS[slot]() : "";
   return '<svg class="sb-svg-photo" style="aspect-ratio:3 / 2" viewBox="0 0 1536 1024" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" role="img">' +
-    '<image href="' + p.src + '" xlink:href="' + p.src + '" x="0" y="0" width="1536" height="1024" preserveAspectRatio="xMidYMid slice"/>' +
+    '<image href="' + p.src + '" xlink:href="' + p.src + '" x="0" y="0" width="1536" height="1024" preserveAspectRatio="xMidYMid meet"/>' +
     '<g transform="scale(3.2)">' + ov + '</g></svg>';
 }
 /* if the Contact page 2 picture file is missing, the gate drawing is shown */
@@ -1280,3 +1322,74 @@ SCENES.contact1 = function () { return SCENES.finale(); };
     ready();
   }
 })();
+
+// Create the lightbox overlay once
+/*document.addEventListener('DOMContentLoaded', () => {
+  const overlay = document.createElement('div');
+  overlay.id = 'lightbox';
+  overlay.innerHTML = '<img id="lightbox-img" alt="Enlarged view">';
+  // overlay.onclick = () => overlay.classList.remove('active');
+  overlay.onclick = (e) => {
+  if (e.target.id === 'lightbox-img') {
+    e.target.classList.toggle('zoomed');
+  } else {
+    overlay.classList.remove('active');
+    document.getElementById('lightbox-img').classList.remove('zoomed');
+  }
+};
+
+  document.body.appendChild(overlay);
+
+  // Make every .sb-art image clickable
+  document.querySelectorAll('.sb-art').forEach(div => {
+    div.onclick = () => {
+      const imageEl = div.querySelector('image');
+      const url = imageEl?.getAttribute('href') || imageEl?.getAttribute('xlink:href');
+      if (!url) return;
+      document.getElementById('lightbox-img').src = url;
+      overlay.classList.add('active');
+    };
+  });
+});
+*/
+
+document.addEventListener('DOMContentLoaded', () => {
+  const overlay = document.createElement('div');
+  overlay.id = 'lightbox';
+  overlay.innerHTML =
+    '<button id="lightbox-close">✕</button>' +
+    '<div id="lightbox-hint">tap image to zoom in</div>' +
+    '<img id="lightbox-img" alt="Enlarged view">';
+  document.body.appendChild(overlay);
+  
+  const img = document.getElementById('lightbox-img');
+  const hint = document.getElementById('lightbox-hint');
+
+  function closeLightbox() {
+    overlay.classList.remove('active', 'zoomed');
+    img.classList.remove('zoomed');
+  }
+
+  document.getElementById('lightbox-close').onclick = closeLightbox;
+
+  overlay.onclick = (e) => {
+    if (e.target === img) {
+      overlay.classList.toggle('zoomed');
+      img.classList.toggle('zoomed');
+      hint.style.display = overlay.classList.contains('zoomed') ? 'none' : 'block';
+    } else if (e.target === overlay) {
+      closeLightbox();
+    }
+  };
+
+  document.querySelectorAll('.sb-art').forEach(div => {
+    div.onclick = () => {
+      const imageEl = div.querySelector('image');
+      const url = imageEl?.getAttribute('href') || imageEl?.getAttribute('xlink:href');
+      if (!url) return;
+      img.src = url;
+      overlay.classList.add('active');
+      hint.style.display = 'flex';
+    };
+  });
+});
