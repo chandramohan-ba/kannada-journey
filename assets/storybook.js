@@ -1300,21 +1300,21 @@ SCENES.contact1 = function () { return SCENES.finale(); };
           return res.text().then(function (t) { throw new Error("Supabase answered " + res.status + ": " + t); });
         }
         form.reset();
-        say(ENQUIRY.successMessage || "Thank you! Your enquiry has been received. We will be in touch.", "ok");
-		
-		fetch("https://ghkakclkobpnwbeafmbu.supabase.co/functions/v1/send-confirmation",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        full_name: val("name"),
-        email: val("email"),
-      }),
-    }
-  );
-      }).catch(function (err) {
+say(ENQUIRY.successMessage || "Thank you! Your enquiry has been received. We will be in touch.", "ok");
+
+fetch(ENQUIRY.supabaseUrl.replace(/\/+$/, "") + "/functions/v1/send-confirmation", {
+  method: "POST",
+  headers: {
+    "apikey": ENQUIRY.supabaseKey,
+    "Authorization": "Bearer " + ENQUIRY.supabaseKey,
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    full_name: row.name,
+    email: row.email
+  })
+});
+	      }).catch(function (err) {
         if (window.console) console.error("Enquiry could not be saved:", err);
         say("Sorry, we could not send your enquiry just now. Please try again in a little while.", "error");
       }).then(function () { btn.disabled = false; });
