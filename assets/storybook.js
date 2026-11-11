@@ -1301,6 +1301,19 @@ SCENES.contact1 = function () { return SCENES.finale(); };
         }
         form.reset();
         say(ENQUIRY.successMessage || "Thank you! Your enquiry has been received. We will be in touch.", "ok");
+		
+		fetch("https://ghkakclkobpnwbeafmbu.supabase.co/functions/v1/send-confirmation",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        full_name: val("name"),
+        email: val("email"),
+      }),
+    }
+  );
       }).catch(function (err) {
         if (window.console) console.error("Enquiry could not be saved:", err);
         say("Sorry, we could not send your enquiry just now. Please try again in a little while.", "error");
@@ -1361,6 +1374,17 @@ document.addEventListener('DOMContentLoaded', () => {
     '<div id="lightbox-hint">tap image to zoom in</div>' +
     '<img id="lightbox-img" alt="Enlarged view">';
   document.body.appendChild(overlay);
+  
+  // Add "tap to enlarge" hint to every image that opens the lightbox
+document.querySelectorAll('img').forEach((image) => {
+  // Only add hint to images that are NOT already inside the lightbox
+  if (image.id !== 'lightbox-img') {
+    const hintEl = document.createElement('div');
+    hintEl.className = 'img-tap-hint';
+    hintEl.textContent = 'tap to enlarge';
+    image.insertAdjacentElement('afterend', hintEl);
+  }
+});
   
   const img = document.getElementById('lightbox-img');
   const hint = document.getElementById('lightbox-hint');
